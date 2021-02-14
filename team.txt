@@ -6,3 +6,7 @@ Ashan Ranmuthu {ashan.ran@utexas.edu}
 Ashan Ranmuthu {MS Grad Student}
 Ashan Ranmuthu My interests include {simulations, piano, making digital music}
 Ashan Ranmuthu I am committed to me and my team members learning Python
+Juan Barberena {jpbarberena@utexas.edu}
+Juan Barberena {PHD Grad Student}
+Juan Barberena My interests include {videogames, soccer, aircraft}
+Juan Barberena I am committed to me and my team members learning Python
