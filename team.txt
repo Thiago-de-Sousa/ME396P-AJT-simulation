@@ -4,7 +4,7 @@ Thiago Burgani My interests include {simulations, racing, videogames}
 Thiago Burgani I am committed to me and my team members learning Python
 Ashan Ranmuthu {ashan.ran@utexas.edu}
 Ashan Ranmuthu {MS Grad Student}
-Ashan Ranmuthu My interests include {simulations, piano, making digital music}
+Ashan Ranmuthu My interests include {simulations, piano, making_digital_music}
 Ashan Ranmuthu I am committed to me and my team members learning Python
 Juan Barberena {jpbarberena@utexas.edu}
 Juan Barberena {PhD Grad Student}
