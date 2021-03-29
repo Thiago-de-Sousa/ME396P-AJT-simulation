@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Mar 28 21:18:33 2021
+Created on Mon Mar 29 17:35:59 2021
 
 @author: thiago
 """
@@ -9,7 +9,7 @@ Created on Sun Mar 28 21:18:33 2021
 import os
 import pandas as pd
 import requests
-from windpowerlib import ModelChain, WindTurbine
+from windpowerlib import ModelChain, WindTurbine, TurbineClusterModelChain, WindFarm
 
 def get_weather_data(filename='weather.csv', **kwargs):
     r"""
@@ -75,7 +75,7 @@ def get_weather_data(filename='weather.csv', **kwargs):
 # Read weather data from csv
 weather = get_weather_data(filename='weather.csv', datapath='')
 
-# Get specific turbine
+# Get specific turbines - Using same as single turbine example
 enercon_e126 = {
     'turbine_type': "E-126/4200",
     'hub_height': 135}
@@ -87,31 +87,34 @@ GE_120 = {
 e126 = WindTurbine(**enercon_e126)
 GE_turb = WindTurbine(**GE_120)
 
-modelchain_data = {
-    'wind_speed_model': 'logarithmic',      # 'logarithmic' (default),
-                                            # 'hellman' or
-                                            # 'interpolation_extrapolation'
-    'density_model': 'ideal_gas',           # 'barometric' (default), 'ideal_gas'
-                                            #  or 'interpolation_extrapolation'
-    'temperature_model': 'linear_gradient', # 'linear_gradient' (def.) or
-                                            # 'interpolation_extrapolation'
-    'power_output_model':
-        'power_curve',          # 'power_curve' (default) or
-                                            # 'power_coefficient_curve'
-    'density_correction': True,             # False (default) or True
-    'obstacle_height': 0,                   # default: 0
-    'hellman_exp': None                     # None (default) or None
-}                    
+"""
+This time, we'll be doing turbine farms instead of single turbines
+This can be specially useful to simulate wake losses created by neighboring
+turbines. Requires more data to be accurate to real world analysis
+"""
+# Dataframe with turbine fleet info
+Enercon_turbine_fleet = pd.DataFrame(
+        {'wind_turbine': [e126],  # as windpowerlib.WindTurbine
+         'number_of_turbines': [6],})
 
-# initialize ModelChain with own specifications and use run_model method to
-# calculate power output
-mc_e126 = ModelChain(e126, **modelchain_data).run_model(
-    weather)
-mc_GE = ModelChain(GE_turb, **modelchain_data).run_model(
-    weather)
-# write power output time series to WindTurbine object
-e126.power_output = mc_e126.power_output
-GE_turb.power_output = mc_GE.power_output
+# initialize WindFarm object
+Enercon_farm = WindFarm(name='Enercon_farm',
+                        wind_turbine_fleet=Enercon_turbine_fleet)
+
+GE_turbine_fleet = pd.DataFrame(
+        {'wind_turbine': [GE_turb],  # as windpowerlib.WindTurbine
+         'number_of_turbines': [6],})
+
+GE_farm = WindFarm(name='GE_farm',
+                        wind_turbine_fleet=GE_turbine_fleet)
+
+mc_enercon_fleet = TurbineClusterModelChain(Enercon_farm).run_model(weather)
+# write power output time series to WindFarm object
+Enercon_farm.power_output = mc_enercon_fleet.power_output
+
+mc_GE_fleet = TurbineClusterModelChain(GE_farm).run_model(weather)
+# write power output time series to WindFarm object
+GE_farm.power_output = mc_GE_fleet.power_output
 
 try:
     from matplotlib import pyplot as plt
@@ -119,38 +122,25 @@ except ImportError:
     plt = None
 
 if plt:
-    e126.power_output.plot(legend=True, label='Enercon E126')
-    GE_turb.power_output.plot(legend=True, label='GE120')
-    plt.title('Power for Enercon E126 and GE120 over a year')
-    plt.xlabel('Time')
-    plt.ylabel('Power in W')
-    plt.show()
-    
-    # Power coefficients
-    fig2 = plt
-    fig2.plot(e126.power_coefficient_curve.wind_speed,
-             e126.power_coefficient_curve.value, 
-             label='Enercon')
-    fig2.plot(GE_turb.power_coefficient_curve.wind_speed,
-             GE_turb.power_coefficient_curve.value, 
-             label='GE 120')
-    fig2.xlabel('Wind speed in m/s')
-    fig2.ylabel('Power coefficient')
-    fig2.title('Power coefficient comparison')
-    fig2.legend()
-    fig2.show()
-    
     # Power output
 
-    fig3 = plt
-    fig3.plot(e126.power_curve.wind_speed,
-             e126.power_curve.value, 
-             label='Enercon')
-    fig3.plot(GE_turb.power_curve.wind_speed,
-             GE_turb.power_curve.value, 
-             label='GE 120')
-    fig3.xlabel('Wind speed in m/s')
-    fig3.ylabel('Power in W')
-    fig3.title('Power curve comparison')
-    fig3.legend()
-    fig3.show()
+    fig1 = plt
+    fig1.plot(Enercon_farm.power_curve.wind_speed,
+             Enercon_farm.power_curve.value, 'g*',
+             label='Enercon farm')
+    fig1.plot(GE_farm.power_curve.wind_speed,
+             GE_farm.power_curve.value, 'ro',
+             label='GE120 farm')
+    fig1.xlabel('Wind speed in m/s')
+    fig1.ylabel('Power in W')
+    fig1.title('Power curve comparison')
+    fig1.legend()
+    fig1.show()
+
+    fig2 = plt
+    Enercon_farm.power_output.plot(legend=True, label='Enercon farm')
+    GE_farm.power_output.plot(legend=True, label='GE120 farm')
+    fig2.title('Power for Enercon E126 and GE120 over a year')
+    fig2.xlabel('Time')
+    fig2.ylabel('Power in W')
+    plt.show()
