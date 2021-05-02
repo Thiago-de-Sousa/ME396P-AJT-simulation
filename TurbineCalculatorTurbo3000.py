@@ -105,7 +105,7 @@ start = datetime.datetime(start_year,start_month,start_day)
 end = datetime.datetime(end_year,end_month,end_day)
 
 # Obtaining weather data
-desired_point = Point(lat,long,10)
+desired_point = Point(lat,long,10) #Finds closest weather station
 weather_data = Hourly(desired_point, start, end)   
 weather_data = weather_data.fetch()
 
