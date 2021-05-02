@@ -13,7 +13,6 @@
 # import necessary packages
 # Data packages
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # Geo packages
 from geopy.distance import geodesic
@@ -60,9 +59,8 @@ if not 1<=end_day<=31 or not isinstance(end_day,int):
     end_day = 1
     
 # Big brain ones
-if start_year == end_year and start_month>end_month:
+if start_year == end_year and start_month>=end_month:
     start_month = end_month
-if start_year == end_year and start_month == end_month:
     if start_day > end_day:
         start_day = end_day - 1
         print('Warning: erroneous dates input. Single day will be obtained')
@@ -73,7 +71,8 @@ if end_year == datetime.datetime.now().year:
     if end_month == datetime.datetime.now().month:
         if end_day > datetime.datetime.now().day:
             end_day = datetime.datetime.now().day
-    
+            print("Warning: if you'd like to use predicted data", 
+                  ' please refer to the FutureGainsTurbineGang model')
 
    
 # Handling location
@@ -94,7 +93,7 @@ if isinstance(desired_lat_long,list) is False:
 
 if distance_mi > 350:
     print('Warning! Your distance to the location is', distance_mi,'miles',
-          '\n','Consider refining your input')
+          '\n','Consider refining your input using City,State/Province,Country')
     YesorNo = input('Would you like to proceed? (Y/N): ')
     if YesorNo != 'Y':
         quit()
@@ -106,7 +105,7 @@ start = datetime.datetime(start_year,start_month,start_day)
 end = datetime.datetime(end_year,end_month,end_day)
 
 # Obtaining weather data
-desired_point = Point(lat,long,0)
+desired_point = Point(lat,long,10)
 weather_data = Hourly(desired_point, start, end)   
 weather_data = weather_data.fetch()
 
@@ -117,8 +116,29 @@ weather_data = weather_data.drop(['dwpt','rhum','prcp','snow','coco',
 weather_data.rename(columns= {'temp':'temperature',
                               'pres':'pressure',
                               'wspd':'wind_speed'},inplace=True)
+w_data_format = weather_data.reindex(columns = ['pressure','temperature',
+                                                'wind_speed'])
+# Adding roughness value (obtained from sample weather data)
+length = len(w_data_format)
+roughness_length_column = [0.15 for i in range(length)]
+w_data_format['roughness_length'] = roughness_length_column
 
-# Unit conversion
+# Unit conversions
+w_data_format['temperature'] += 273.15 # Kelvin conversion
+w_data_format['pressure'] *= 100 # conversion from hPa to Pa
+w_data_format['wind_speed'] *= (5/18) # conversion to m/s
+
+# adding heights row 
+heights_row = []
+heights_row.insert(0,{'pressure': 0,'temperature': 2,'wind_speed':10,
+                      'roughness_length':0})
+formatted_weather_data = pd.concat([pd.DataFrame(heights_row),w_data_format],
+                                   ignore_index=False)
+formatted_weather_data.to_csv('Test_file.csv')
+
+
+
+
 
 
 
