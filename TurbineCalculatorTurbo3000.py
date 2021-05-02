@@ -132,9 +132,13 @@ w_data_format['wind_speed'] *= (5/18) # conversion to m/s
 heights_row = []
 heights_row.insert(0,{'pressure': 0,'temperature': 2,'wind_speed':10,
                       'roughness_length':0})
-formatted_weather_data = pd.concat([pd.DataFrame(heights_row),w_data_format],
+data = pd.concat([pd.DataFrame(heights_row),w_data_format],
                                    ignore_index=False)
-formatted_weather_data.to_csv('Test_file.csv')
+# In case of missing data:
+data.loc[data["pressure"].isnull(),'pressure'] = 101500
+data.loc[data["temperature"].isnull(),'temperature'] = 298
+data.loc[data["wind_speed"].isnull(),'wind_speed'] = 0
+data.to_csv('Test_file.csv')
 
 
 
