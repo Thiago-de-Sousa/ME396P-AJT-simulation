@@ -1,0 +1,195 @@
+import os
+import pandas as pd
+import requests
+from windpowerlib import ModelChain, WindTurbine
+
+def get_weather_data(filename='weather.csv', **kwargs):
+    r"""
+    Imports weather data from a file.
+    The data include wind speed at two different heights in m/s, air
+    temperature in two different heights in K, surface roughness length in m
+    and air pressure in Pa. The height in m for which the data applies is
+    specified in the second row.
+    In case no weather data file exists, an example weather data file is
+    automatically downloaded and stored in the same directory as this example.
+    Parameters
+    ----------
+    filename : str
+        Filename of the weather data file. Default: 'weather.csv'.
+    Other Parameters
+    ----------------
+    datapath : str, optional
+        Path where the weather data file is stored.
+        Default is the same directory this example is stored in.
+    Returns
+    -------
+    :pandas:`pandas.DataFrame<frame>`
+        DataFrame with time series for wind speed `wind_speed` in m/s,
+        temperature `temperature` in K, roughness length `roughness_length`
+        in m, and pressure `pressure` in Pa.
+        The columns of the DataFrame are a MultiIndex where the first level
+        contains the variable name as string (e.g. 'wind_speed') and the
+        second level contains the height as integer at which it applies
+        (e.g. 10, if it was measured at a height of 10 m). The index is a
+        DateTimeIndex.
+    """
+
+    if 'datapath' not in kwargs:
+        kwargs['datapath'] = os.path.dirname(__file__)
+
+    file = os.path.join(kwargs['datapath'], filename)
+
+    # download example weather data file in case it does not yet exist
+    if not os.path.isfile(file):
+        req = requests.get("https://osf.io/59bqn/download")
+        with open(file, "wb") as fout:
+            fout.write(req.content)
+
+    # read csv file
+    weather_df = pd.read_csv(
+        file,
+        index_col=0,
+        header=[0, 1],
+        date_parser=lambda idx: pd.to_datetime(idx, utc=True))
+
+    # change time zone
+    weather_df.index = weather_df.index.tz_convert(
+        'Europe/Berlin')
+    
+    
+    return weather_df
+
+
+# Read weather data from csv
+weather = get_weather_data(filename='weather.csv', datapath='')
+
+# Get specific turbine
+enercon_e126 = {
+    'turbine_type': "E-126/4200",
+    'hub_height': 135}
+
+e126 = WindTurbine(**enercon_e126)
+
+modelchain_data = {
+    'wind_speed_model': 'logarithmic',      # 'logarithmic' (default),
+                                            # 'hellman' or
+                                            # 'interpolation_extrapolation'
+    'density_model': 'ideal_gas',           # 'barometric' (default), 'ideal_gas'
+                                            #  or 'interpolation_extrapolation'
+    'temperature_model': 'linear_gradient', # 'linear_gradient' (def.) or
+                                            # 'interpolation_extrapolation'
+    'power_output_model':
+        'power_curve',          # 'power_curve' (default) or
+                                            # 'power_coefficient_curve'
+    'density_correction': True,             # False (default) or True
+    'obstacle_height': 0,                   # default: 0
+    'hellman_exp': None                     # None (default) or None
+}                    
+
+# initialize ModelChain with own specifications and use run_model method to
+# calculate power output
+mc_e126 = ModelChain(e126, **modelchain_data).run_model(
+    weather)
+# write power output time series to WindTurbine object
+e126.power_output = mc_e126.power_output
+
+
+## User inputs and default values
+ccost = (input("Enter the construction value for a single Enercon E126 turbine: "))
+mfactor = (input("Enter the annual maintenance cost as a percentage of the total cost (just the number): "))
+revenue = (input("Enter the expected revenue per kWh: "))
+print()
+print()
+if ccost == '0' or ccost == '':
+    ccost = 14000000
+else: 
+    ccost = int(ccost)
+    
+if mfactor == '0' or mfactor == '':
+    mfactor = 0.02
+else:
+    mfactor = float(mfactor) / 100
+    
+if revenue == '0' or revenue == '':
+    revenue = 0.07
+else:
+    revenue = float(revenue)
+
+## Definition and population of lists for plotting
+power_gen = []
+revenue_list = []
+cost_list = []
+profit_list = []
+cum_revenue = []
+cum_profit = []
+
+for i in range(0,len(e126.power_output)):
+    power_gen.append(e126.power_output.iloc[i])
+    cost_list.append(ccost + (((i+1)*mfactor/(365*24)))*ccost)
+for item in power_gen:
+    revenue_list.append(revenue * item / 1000)
+for i in range(0,len(revenue_list)):
+    profit_list.append(revenue_list[i] - cost_list[i])
+    if i == 0:
+        cum_revenue.append(revenue_list[i])
+        cum_profit.append(revenue_list[i] - cost_list[i])
+    else:
+        cum_revenue.append(revenue_list[i] + cum_revenue[i-1])
+        cum_profit.append(revenue_list[i] + cum_revenue[i-1] - cost_list[i])
+
+    
+time_range = len(power_gen) / (24*365)
+tot_revenue = sum(revenue_list)
+tot_costs = cost_list[-1]
+
+
+## Analysis Results
+print(38*'-')
+print("Analysis for Enercon E126 wind turbine")
+print(38*'-')
+print()
+print("Total time analyzed:", '{:.1f}'.format(time_range), 'years')
+print("Construction Cost for Turbine: $", ccost)
+print("Annual Maintenance Cost: $", int(ccost*mfactor))
+print("Revenue per kWh: $", revenue)
+print()
+print("Total Energy Output:",'{:.0f}'.format(sum(power_gen)/1000000), "MWh")
+print("Total Revenue over the time range: $", '{:.0f}'.format(tot_revenue))
+print("Total Profit over the time range: $", '{:.0f}'.format(tot_revenue - tot_costs))
+if tot_revenue > tot_costs:
+    print("Break-Even Point reached in ",'{:.2f}'.format((tot_costs / tot_revenue)), 'years')
+else:
+    print("Break-Even Point reached in ",'{:.2f}'.format(ccost / (tot_revenue - ccost*mfactor)), 'years')
+#GE_turb.power_output = mc_GE.power_output
+#print(enercon_e126.get('construction_cost'))
+
+try:
+    from matplotlib import pyplot as plt
+except ImportError:
+    plt = None
+
+if plt:
+    e126.power_output.plot()
+    plt.title('Power for Enercon E126 over a year')
+    plt.xlabel('Time')
+    plt.ylabel('Power in W')
+    plt.show()
+    
+
+    ## Revenue vs. Costs Plot
+    fig3 = plt
+    fig3.plot(list(weather.index.to_pydatetime()), cum_revenue, label = "Revenue")
+    fig3.plot(list(weather.index.to_pydatetime()), cost_list, label = "Costs")
+    fig3.legend()
+    fig3.xlabel('Time')
+    fig3.ylabel("USD")
+    fig3.title("Financial Analysis for Enercon E126")
+    fig3.show()
+    
+    ## Profit Plot
+    fig4 = plt
+    fig4.plot(list(weather.index.to_pydatetime()), cum_profit)
+    fig4.xlabel('Time')
+    fig4.ylabel("USD")
+    fig4.title("Profit for Enercon E126")
+    fig4.show()
