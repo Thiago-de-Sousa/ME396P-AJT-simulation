@@ -111,8 +111,12 @@ weather_data['pressure'] *= 100 # conversion from hPa to Pa
 heights_row = []
 heights_row.insert(0,{'Time':'height','pressure': 0,'temperature': 2,
                       'wind_speed':10,'roughness_length':0})
-formatted_weather_data = pd.concat([pd.DataFrame(heights_row),weather_data],
+w_data = pd.concat([pd.DataFrame(heights_row),weather_data],
                                    ignore_index=True)
+# In case of missing data:
+w_data.loc[w_data["pressure"].isnull(),'pressure'] = 101500
+w_data.loc[w_data["temperature"].isnull(),'temperature'] = 298
+w_data.loc[w_data["wind_speed"].isnull(),'wind_speed'] = 0
 
-formatted_weather_data.to_csv('Test_file_deliverable2.csv',index=False)
+w_data.to_csv('Test_file_deliverable2.csv',index=False)
 
