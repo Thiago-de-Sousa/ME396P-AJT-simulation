@@ -195,7 +195,7 @@ while turbine != 'q':
             print('Warning! Your distance to the location is', distance_mi,'miles',
                   '\n','Consider refining your input using City,State/Province,Country')
             YesorNo = input('Would you like to proceed? (Y/N): ')
-            if YesorNo != 'Y':
+            if YesorNo != 'Y' or YesorNo != 'y':
                 quit()
         
         # Handling start year, end year, and standardized timezone
@@ -385,7 +385,7 @@ while turbine != 'q':
         
         print()
         YesNo = input("Do you want to continue using the program? (Y/N): ")
-        if YesNo == 'Y':
+        if YesNo == 'Y' or YesNo == 'y':
             continue
         else:
             break
@@ -591,7 +591,7 @@ while turbine != 'q':
         
         print()
         YesNo = input("Do you want to continue using the program? (Y/N): ")
-        if YesNo == 'Y':
+        if YesNo == 'Y' or YesNo == 'y':
             continue
         else:
             break
