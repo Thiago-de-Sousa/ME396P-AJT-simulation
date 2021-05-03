@@ -211,8 +211,8 @@ while turbine != 'q':
             print('\n','Warning! Your distance to the location is', distance_mi,'miles',
                   '\n','Consider refining your input using City,State/Province,Country')
             YesorNo = input('Would you like to proceed? (Y/N): ')
-            if YesorNo != ('Y' or 'y'):
-                sys.exit('Weather')
+            if not(YesorNo == 'Y' or YesorNo == 'y'):
+                sys.exit('Exiting program')
         
         # Handling start year, end year, and standardized timezone
         tf = TZFind()
