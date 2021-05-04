@@ -279,6 +279,5 @@ plt.xlabel('Time')
 plt.xticks(rotation = 45)
 plt.ylabel('Power in W')
 plt.tight_layout()
-plt.show()
 plt.savefig('Forecast Plots/Forecast_{}_{}.png'.format(desired_loc, dt_string))
- 
+plt.show()
