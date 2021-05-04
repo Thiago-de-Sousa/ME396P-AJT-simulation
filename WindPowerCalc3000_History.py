@@ -208,7 +208,7 @@ while turbine != 'q':
                 if end_day > datetime.datetime.now().day:
                     end_day = datetime.datetime.now().day
                     print('\n',"Warning: if you'd like to use predicted data", 
-                          ' please refer to the FutureGainsTurbineGang model')
+                          ' please refer to the Forecast model')
         
            
         # Handling location
