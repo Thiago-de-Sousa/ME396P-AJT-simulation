@@ -42,10 +42,10 @@ following commands:
   pip install matplotlib        
   pip install csv
   
-The required file for correct function of the program is a spreadsheet called MyTurbines.csv that contains three columns: turbine_catalog_name, hub_height and amount.
+The required files for correct function of the program are two spreadsheet called TurbinesToCompare.csv, which contains two columns, turbine_catalog_name and hub_height, and MyTurbines.csv that contains three columns: turbine_catalog_name, hub_height and amount.
 Each row will represent a different turbine type, with the name extracted from the database included in the program ('turbine_type' values). The hub height is measured in meters from
 the ground to the center of the hub, and the amount refers to the number of each turbine type found in a wind farm. 
-It is extremely important to have the spreadsheet formatted as outlined above, or the program will not work as intended, and wrong results or program termination might occur.
+It is extremely important to have the spreadsheets formatted as outlined above, or the program will not work as intended, and wrong results or program termination might occur.
 
 ------------
 III. MODULES
