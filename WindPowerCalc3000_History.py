@@ -159,21 +159,15 @@ while turbine != 'q':
         end_year = input('End Year: ')
         end_month = input('Month (as number 1-12): ')
         end_day = input('Day: ')
-        
-        # # Just for testing:
-        # desired_loc = 'Austin, TX'
-        # start_year = '2013'
-        # start_month = '1'
-        # start_day = '1'
-        # end_year = '2021'
-        # end_month = '1'
-        # end_day = '1'
+
         
         try:
             start_year,start_month,start_day = eval(start_year), eval(start_month), eval(start_day)
             end_year,end_month,end_day = eval(end_year), eval(end_month), eval(end_day)
         except NameError:
-            sys.exit('\n','Invalid input. Please try again')
+            sys.exit('Invalid input. Please try again')
+        except SyntaxError:
+            sys.exit('Invalid input. Please try again')
         
         # Handling too old data and users from the future that don't know 
         # the gregorian calendar
