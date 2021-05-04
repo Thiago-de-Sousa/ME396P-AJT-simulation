@@ -478,7 +478,7 @@ while turbine != 'q':
             
         print()
         YesNo = input("Do you want to continue using the program? (Y/N): ")
-        if YesNo == ('Y' or 'y'):
+        if YesNo == 'Y' or YesNo == 'y':
             continue
         else:
             print("Program exited.")
@@ -700,7 +700,7 @@ while turbine != 'q':
         input('NOTE: Please place the saved plot png files in a new folder so that they don''t get overwritten upon the next comparison of turbines. Hit enter once you''ve done this.')
         
         YesNo = input("Do you want to continue using the program? (Y/N): ")
-        if YesNo == ('Y' or 'y'):
+        if YesNo == 'Y' or YesNo == 'y':
             continue
         else:
             print("Program exited.")
