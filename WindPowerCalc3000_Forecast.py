@@ -268,6 +268,7 @@ dt_string = now.strftime("%d-%m-%Y %H%M")
 print("date and time =", dt_string)
 
 # Plotting
+plt.close('all')
 plt.figure()
 # listOfModelChains[0].power_output.plot(legend=True, label='Enercon E126')
 # listOfModelChains[1].power_output.plot(legend=True, label='GE120')
