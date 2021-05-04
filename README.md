@@ -65,7 +65,8 @@ First, ensure you are in the correct working directory. End should be /ME396P-AJ
 After cloning the repository, run the WindPowerCalc3000_History.py file. Once it is running, you will be presented with the welcome interface. Keyboard commands will be displayed with an explanation for each different command. 
 IMPORTANT: In order to use the program, the user needs to download the weather data first. Type w (case sensitive) to access the Weather Generation Module.
 
-IV-A. Weather Generation Module
+**IV-A. Weather Generation Module**
+
 Once inside the Weather Generation Module, the user will type in the desired location for analysis in the format City, State/Province, Country. Some City, State Abbreviation
 combinations work, but others may not. For instance, if you type 'Denver, CO', the program will locate you in a small town in Colombia. After location input, the program will ask
 for the beginning of the time frame in the format YYYY/M/D, all in separate prompts. Similarly, the program will then ask for the end of the time frame with the same format.
@@ -73,11 +74,13 @@ Once location and time range have been specified, the program will check for dis
 greater than 350 miles, the program will ask for input validation from the user. To continue, type 'y' or 'Y'. The weather download will begin, and it may take a few moments. 
 Once it is done, a message will appear saying so, and the user will be presented again with the welcome instructions.
 
-IV-B. Wind Turbine Database
+**IV-B. Wind Turbine Database**
+
 To access the included turbine database, type 'db' in the welcome screen. The program will output a 60+ item list containing the manufacturer, turbine name (used in the CSV file 
 mentioned in Section II), and whether curves are available for each turbine. It is important to write the turbine type exactly as it appears on this database!
 
-IV-C. Single-Turbine Analysis Module
+**IV-C. Single-Turbine Analysis Module**
+
 To access this module, type 's' in the welcome screen. If weather data hasn't been generated yet the program will produce an error message and return the user to the welcome screen. 
 Once the weather data is available, the user will need to type the name of the turbine they wish to analyze. The user can always type 'db' if they forget what the exact name is.
 Once the turbine type is accepted by the program, the user will need to input several parameters that include Hub Height, Construction Cost, Annual Maintenance Cost (as a percentage
@@ -96,7 +99,8 @@ The program will also show three different plots. These include the following in
 
 Once the user has reviewed all the information presented, they can choose whether to return to the welcome screen or to quit the program.
 
-IV-D. Multiple-Turbine Comparison Module
+**IV-D. Multiple-Turbine Comparison Module**
+
 To access this module, type 'c' in the welcome screen. Similarly to the single turbine module, weather data needs to be downloaded first before gaining access to this module.
 Instructions regarding the required CSV file will be presented. Once the CSV file is ready in the same directory and with the correct format, the user can hit any key to advance. The
 program will read the file and prompt user-input for the parameters for each turbine. Revenue per kWh will be considered the same for all turbines, since the purpose of this module
