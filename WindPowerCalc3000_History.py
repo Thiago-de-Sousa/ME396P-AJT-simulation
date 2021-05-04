@@ -452,6 +452,7 @@ while turbine != 'q':
             plt.ylabel('Power in W')
             plt.tight_layout()
             plt.savefig('History Plots/Single Turbine History Plots/{} in {} - Power Output.png'.format(turb_name_forPlotSaving, desired_loc))
+            plt.show()
             
             plt.figure(2)
             plt.plot(list(weather.index.to_pydatetime()), cum_revenue, label = "Revenue")
@@ -462,8 +463,8 @@ while turbine != 'q':
             plt.ylabel("USD")
             plt.title('Financial Analysis for {} in {}'.format(turb_name_forPlotSaving, desired_loc))
             plt.tight_layout()
-            plt.show()
             plt.savefig('History Plots/Single Turbine History Plots/{} in {} - Financial Analysis.png'.format(turb_name_forPlotSaving, desired_loc))
+            plt.show()
             
             plt.figure(3)
             plt.plot(list(weather.index.to_pydatetime()), cum_profit)
@@ -472,8 +473,8 @@ while turbine != 'q':
             plt.ylabel("USD")
             plt.title('Profit for {} in {}'.format(turb_name_forPlotSaving, desired_loc))
             plt.tight_layout()
-            plt.show()  
             plt.savefig('History Plots/Single Turbine History Plots/{} in {} - Profit.png'.format(turb_name_forPlotSaving, desired_loc))
+            plt.show()
             
         print()
         YesNo = input("Do you want to continue using the program? (Y/N): ")
@@ -644,9 +645,9 @@ while turbine != 'q':
             plt.title('{} - Power Output Comparison'.format(desired_loc))
             plt.xlabel('Time')
             plt.ylabel('Power in W')
-            plt.show()
             plt.tight_layout()
             plt.savefig('History Plots/Turbine Comparison History Plots/{} - Power Output Comparison.png'.format(desired_loc))
+            plt.show()
             
             # Plots of fiancial data for only two compared turbines
             if len(listOfDicts) == 2:
@@ -670,9 +671,8 @@ while turbine != 'q':
                 plt.xticks(rotation = 60)
                 plt.title("{}".format(listOfDicts[1]['turbine_type']))
                 plt.tight_layout()
-                plt.show()
                 plt.savefig('History Plots/Turbine Comparison History Plots/{} - Financial Analysis Comparison.png'.format(desired_loc))
- 
+                plt.show()
                 
  
                 plt.figure(4)
@@ -689,9 +689,9 @@ while turbine != 'q':
                 plt.xticks(rotation = 60)
                 plt.title("{}".format(listOfDicts[1]['turbine_type']))
                 plt.tight_layout()
-                plt.show()
                 plt.savefig('History Plots/Turbine Comparison History Plots/{} - Profit Comparison.png'.format(desired_loc))
-
+                plt.show()
+                
             else:
                 print()
                 print("WARNING! Financial Comparison Plots are not available for more than two turbines... ")
