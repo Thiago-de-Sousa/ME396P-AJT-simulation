@@ -260,16 +260,12 @@ for elem in powerOutputListOfArrays:
 
 # Convert to a pandas series for faster plotting
 totalPowerPandasSeries = pd.Series(totalPowerArray, tspan)
-print(totalPowerPandasSeries)
 
 # Plotting
 plt.figure()
 # listOfModelChains[0].power_output.plot(legend=True, label='Enercon E126')
 # listOfModelChains[1].power_output.plot(legend=True, label='GE120')
 totalPowerPandasSeries.plot()
-plt.title('Power for Enercon E126 and GE120 over a year')
+plt.title('Power Generation Forecast for Next Seven Days')
 plt.xlabel('Time')
 plt.ylabel('Power in W')
-# plt.show()
-
-
