@@ -17,6 +17,7 @@ import sys
 import pandas as pd
 import requests
 from windpowerlib import ModelChain, WindTurbine, get_turbine_types
+from matplotlib import pyplot as plt
 
 from geopy.distance import geodesic
 import geocoder
@@ -100,6 +101,8 @@ modelchain_data = {
     'hellman_exp': None                     # None (default) or None
 }                    
     
+plt.close('all')
+
 # Dummy variable for the while loop to begin    
 turbine = 'a'
 weather = None
@@ -114,16 +117,31 @@ print("To download weather data for a specific location, type 'w'")
 print("If you wish to analyze one turbine, type 's'")
 print("If you wish to compare two turbines, type 'c'")
 print("If you wish to see the turbine database, type 'db'")
-print("If you wish to exit, type 'q' now!")
+print("If you wish to exit, type 'q' now.")
 print()
-print("NOTE: You must first download weather data before turbine analysis!")
+print("NOTE: You must first download weather data before turbine analysis.")
 print()
 
+counterr = 0
 # Loop to ensure valid input from the user and to perform the desired function
 while turbine != 'q':
+    
+    #if the user is doing a second calculation, remind them of the instructions.
+    if counterr != 0:
+        print()
+        print()
+        print('Instructions:')
+        print("To download weather data for a specific location, type 'w'")
+        print("If you wish to analyze one turbine, type 's'")
+        print("If you wish to compare two turbines, type 'c'")
+        print("If you wish to see the turbine database, type 'db'")
+        print("If you wish to exit, type 'q' now.")
+    counterr+=1
+    
     turbine = input("What do you wish to do? ")
+    
     if turbine == 'q':
-        print("Program exiting...")
+        print("Program exited.")
         break
     elif turbine == 'w':
         print()
@@ -141,6 +159,15 @@ while turbine != 'q':
         end_year = input('End Year: ')
         end_month = input('Month (as number 1-12): ')
         end_day = input('Day: ')
+        
+        # # Just for testing:
+        # desired_loc = 'Sacramento'
+        # start_year = '2021'
+        # start_month = '1'
+        # start_day = '1'
+        # end_year = '2021'
+        # end_month = '2'
+        # end_day = '28'
         
         try:
             start_year,start_month,start_day = eval(start_year), eval(start_month), eval(start_day)
@@ -190,9 +217,11 @@ while turbine != 'q':
             desired_lat_long = Location.latlng
             lat, long = round(desired_lat_long[0],2), round(desired_lat_long[1],2)
         except NameError:
-            sys.exit('Please install geocoder before proceeding')
+            # sys.exit('Please install geocoder before proceeding')
+            break
         except TypeError:
-            sys.exit('Please enter a valid location')
+            # sys.exit('Please enter a valid location')
+            break
         
         # Determining where user is, to warn if input is very far from them
         try:
@@ -212,7 +241,9 @@ while turbine != 'q':
                   '\n','Consider refining your input using City,State/Province,Country')
             YesorNo = input('Would you like to proceed? (Y/N): ')
             if not(YesorNo == 'Y' or YesorNo == 'y'):
-                sys.exit('Exiting program')
+                # sys.exit('Exiting program.')
+                print('Program exited.')
+                break
         
         # Handling start year, end year, and standardized timezone
         tf = TZFind()
@@ -263,6 +294,7 @@ while turbine != 'q':
         print("Done!",'\n')
         continue
     elif turbine == 'db':
+        print()
         df=get_turbine_types(print_out=True)
         continue
     
@@ -288,42 +320,60 @@ while turbine != 'q':
         
         # User input of turbine to analyze. Loop to ensure valid turbine name is entered
         while turb_correct == False:
-            turb_name = input("Enter the name of the turbine you wish to analyze EXACTLY as it appears in the database: ")
+            turb_name = input("Enter the name of the turbine you wish to analyze exactly as it appears in the 'turbine_type' column of the database. Or enter 'db' to see the database: ")
+            # turb_name = input("To see turbine database, type 'db'. The name of a turbine is under the turbine_type column")
             if turb_name in df.values:
                 turb_correct = True
+            elif turb_name == 'db':
+                df=get_turbine_types(print_out=True)
+                continue
             else:
-                print("This turbine is not in the database! Try again...")
+                print()
+                # print("This turbine is not in the database.")
+                YesorNo = input('This turbine is not in the database. The turbine database has turbine names in the ''turbine_type'' column. Would you like to see the turbine database? (Y/N): ')
+                if (YesorNo == 'Y') or  (YesorNo == 'y'):
+                    print()
+                    df=get_turbine_types(print_out=True)
+                    
                 continue
             
-         # Parameter input from user. If no value is entered, default values will be used   
-            hub_height = input("Enter the hub height for the turbine (meters): ")
-            if hub_height == '0' or hub_height == '':
-                print("WARNING! Default value will be used...")
-                hub_height = 135
-            else:
-                hub_height = int(hub_height)
-                
-            ccost = input('Enter the construction cost (USD) for a single {} turbine: '.format(turb_name))
-            if ccost == '0' or ccost == '':
-                ccost = 10000000
-                print("WARNING! Default value will be used...",ccost)
-            else: 
-                ccost = eval(ccost)
-                
-            mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (w/o %): "))
-            if mfactor == '0' or mfactor == '':
-                mfactor = 0.02
-                print("WARNING! Default value will be used...",mfactor)
-            else:
-                mfactor = float(mfactor) / 100
-                
-            revenue = (input("Enter the expected revenue per kWh: "))
-            if revenue == '0' or revenue == '':
-                print("WARNING! Default value will be used...")
-                revenue = 0.07
-            else:
-                revenue = float(revenue)
-                
+            # Parameter input from user. If no value is entered, default values will be used   
+                hub_height = input("Enter the hub height for the turbine (meters): ")
+                if hub_height == '0' or hub_height == '':
+                    print("WARNING! Default value will be used...")
+                    hub_height = 135
+                else:
+                    hub_height = int(hub_height)
+                  
+                ccost = input('Enter the construction cost (USD) for a single {} turbine: '.format(turb_name))
+                if ccost == '0' or ccost == '':
+                    ccost = 10000000
+                    print("WARNING! Default value will be used...",ccost)
+                else: 
+                    ccost = eval(ccost)
+                  
+                mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (don't include the % symbol): "))
+                if mfactor == '0' or mfactor == '':
+                    mfactor = 0.02
+                    print("WARNING! Default value will be used...",mfactor)
+                else:
+                    mfactor = float(mfactor) / 100
+                 
+                revenue = (input("Enter the expected revenue per kWh: "))
+                if revenue == '0' or revenue == '':
+                    print("WARNING! Default value will be used...")
+                    revenue = 0.07
+                else:
+                    revenue = float(revenue)
+            
+            # #Just for testing:
+            # hub_height = 135
+            # ccost = 3e6
+            # mfactor = 0.02
+            # revenue = 0.07
+            
+            
+            
             print()
             print()
             
@@ -374,42 +424,40 @@ while turbine != 'q':
         print("Break-Even Point reached in ",'{:.2f}'.format(turbine_data['construction_cost'] / ((tot_revenue / time_range) - turbine_data['construction_cost']*turbine_data['maint_cost'])), 'years')
         
         # Plot of power output and financial results
-        try:
-            from matplotlib import pyplot as plt
-        except ImportError:
-            plt = None
+        
         
         if plt:
+            plt.close('all')
             turbine_model.power_output.plot()
             plt.title('Power Output for {}'.format(turb_name))
             plt.xlabel('Time')
             plt.ylabel('Power in W')
             plt.show()
-        
-            fig3 = plt
-            fig3.plot(list(weather.index.to_pydatetime()), cum_revenue, label = "Revenue")
-            fig3.plot(list(weather.index.to_pydatetime()), cost_list, label = "Costs")
-            fig3.legend()
-            fig3.xlabel('Time')
-            fig3.xticks(rotation = 45)
-            fig3.ylabel("USD")
-            fig3.title("Financial Analysis for {}".format(turb_name))
-            fig3.show()
             
-            fig4 = plt
-            fig4.plot(list(weather.index.to_pydatetime()), cum_profit)
-            fig4.xlabel('Time')
-            fig4.xticks(rotation = 45)
-            fig4.ylabel("USD")
-            fig4.title("Profit for {}".format(turb_name))
-            fig4.show()  
+            plt.figure(3)
+            plt.plot(list(weather.index.to_pydatetime()), cum_revenue, label = "Revenue")
+            plt.plot(list(weather.index.to_pydatetime()), cost_list, label = "Costs")
+            plt.legend()
+            plt.xlabel('Time')
+            plt.xticks(rotation = 45)
+            plt.ylabel("USD")
+            plt.title("Financial Analysis for {}".format(turb_name))
+            plt.show()
+            
+            plt.figure(4)
+            plt.plot(list(weather.index.to_pydatetime()), cum_profit)
+            plt.xlabel('Time')
+            plt.xticks(rotation = 45)
+            plt.ylabel("USD")
+            plt.title("Profit for {}".format(turb_name))
+            plt.show()  
         
         print()
         YesNo = input("Do you want to continue using the program? (Y/N): ")
         if YesNo == ('Y' or 'y'):
             continue
         else:
-            print("Program exiting...")
+            print("Program exited.")
             break
     
     elif turbine == 'c': 
@@ -446,24 +494,23 @@ while turbine != 'q':
         print("TURBINE COMPARISON MODULE")
         print(25*'-')
         print("Instructions: ")
-        print("To use this module, you will need to create a CSV file containing " 
-              "the name of the turbines you wish to compare and their respective " 
-              "hub heights. Then you will need to input some required values when prompted. "
-              "If you wish to use the default values, you can simply hit 'Enter'")
+        print("This module uses a file called TurbinesToCompare.CSV (in the same directory as this program). "
+              "Please update that CSV file with the turbines you wish to compare and the desired respective hub heights. "
+              "To see the database of available turbines, refer to turbine_database.csv (in the same directory as this program).")
+
         print()
-        print("NOTE: Financial Plots are available only when comparing two turbines!")
-        print()              
-        access = input("If you have the CSV file ready, press any key to continue... ")
+        print("NOTE: Financial Plots are available only when comparing two turbines.")           
+        access = input("If you have the CSV file ready, press enter to continue... ")
         
         # Turbine list population from user CSV file
-        csvdata = pd.read_csv('MyTurbines.csv')
+        csvdata = pd.read_csv('TurbinesToCompare.csv')
         turbinesList = csvdata.turbine_catalog_name.to_numpy().tolist()
         hubHeightsList = csvdata.hub_height.to_numpy().tolist()
-        amountsList = csvdata.amount.to_numpy().tolist()
+        
         listOfDicts = []
         n=0
         for turbine in turbinesList:
-            listOfDicts.append({'turbine_type': turbine, 'hub_height': hubHeightsList[n], 'amount': amountsList[n]})
+            listOfDicts.append({'turbine_type': turbine, 'hub_height': hubHeightsList[n]})
             n+=1
         
         n=0
@@ -483,30 +530,28 @@ while turbine != 'q':
             listOfPowerOutputs.append(elem.power_output)
             
         # Parameter input from the user. If not value is entered, defaults will be used
-        revenue = (input("Enter the expected revenue per kWh: "))  
+        revenue = (input("Enter the expected revenue (USD) per kWh: "))  
         if revenue == '0' or revenue == '':
                 print("WARNING! Default value will be used...")
                 revenue_list.append(0.07)
         else:
-                revenue_list.append(float(revenue))
+                revenue_list.append(float(eval((revenue))))
                             
         for j in range(0, len(listOfDicts)):
-            ccost = input('Enter the construction cost for a single {} turbine: '.format(listOfDicts[j]['turbine_type']))
+            ccost = input('Enter the construction cost (USD) for a single {} turbine (scientific notation like 4.5e7 is ok): '.format(listOfDicts[j]['turbine_type']))
             if ccost == '0' or ccost == '':
                 print("WARNING! Default value will be used...")
                 ccost_list.append(10000000)
             else: 
-                ccost_list.append(int(ccost))
+                ccost_list.append(int(eval(ccost)))
                 
-            mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (w/o %): "))
+            mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (don't include the % symbol): "))
             if mfactor == '0' or mfactor == '':
                 print("WARNING! Default value will be used...")
                 mfactor_list.append(0.02)
             else:
-                mfactor_list.append(float(mfactor) / 100)
+                mfactor_list.append(float(eval((mfactor)) / 100))
                 
-            print()
-            print()
     
             # Power Output calculations
             for i in range(0,len(listOfModelChains[j].power_output)):
@@ -557,7 +602,7 @@ while turbine != 'q':
         print("Total time analyzed:", '{:.1f}'.format(time_range), 'years')
         print("Revenue per kWh: $", revenue_list[0])
         print()
-        print("{:^11} {:^10} {:^11} {:^12} {:^12} {:^10} {:^7}".format('Turbine', 'Const.($)', 'Maint.($)', 'Energy(MWh)', 'Revenue($)', 'Profit($)', 'BE(Yr)'))
+        print("{:^11} {:^10} {:^11} {:^12} {:^12} {:^10} {:^7}".format('Turbine', 'Const.($)', 'Maint.($)', 'Energy(MWh)', 'Revenue($)', 'Profit($)', 'Break Even(Yr)'))
         for turbine, ccost, maint, energy, revenue, profit, be_point in zip(turbinesList, ccost_list, maint_list, tot_energy, tot_revenue, tot_profit, breakeven):
             print("{:^11} {:^10} {:^11} {:^12.0f} {:^12.0f} {:^10.0f} {:^7.2f}".format(turbine, ccost, maint, energy, revenue, profit, be_point))
                     
@@ -578,41 +623,42 @@ while turbine != 'q':
             
             # Plots of fiancial data for only two compared turbines
             if len(listOfDicts) == 2:
-                fig3 = plt
-                fig3.suptitle("Financial Analysis")
-                fig3.subplot(1, 2, 1)
-                fig3.plot(list(weather.index.to_pydatetime()), cum_revenue_comparison[0], label = "Revenue")
-                fig3.plot(list(weather.index.to_pydatetime()), cost_comparison[0], label = "Costs")
-                fig3.legend()
-                fig3.xlabel('Time')
-                fig3.xticks(rotation = 60)
-                fig3.ylabel("USD")
-                fig3.title("{}".format(listOfDicts[0]['turbine_type']))
-                fig3.subplot(1, 2, 2)
-                fig3.plot(list(weather.index.to_pydatetime()), cum_revenue_comparison[1], label = "Revenue")
-                fig3.plot(list(weather.index.to_pydatetime()), cost_comparison[1], label = "Costs")
-                fig3.legend()
-                fig3.xlabel('Time')
-                fig3.xticks(rotation = 60)
-                fig3.title("{}".format(listOfDicts[1]['turbine_type']))
-                fig3.tight_layout()
-                fig3.show()
                 
-                fig4 = plt
-                fig4.suptitle("Profit Comparison")
-                fig4.subplot(1, 2, 1)
-                fig4.plot(list(weather.index.to_pydatetime()), cum_profit_comparison[0])
-                fig4.xlabel('Time')
-                fig4.xticks(rotation = 60)
-                fig4.ylabel("USD")
-                fig4.title("{}".format(listOfDicts[0]['turbine_type']))
-                fig4.subplot(1, 2, 2)
-                fig4.plot(list(weather.index.to_pydatetime()), cum_profit_comparison[1])
-                fig4.xlabel('Time')
-                fig4.xticks(rotation = 60)
-                fig4.title("{}".format(listOfDicts[1]['turbine_type']))
-                fig4.tight_layout()
-                fig4.show()
+                plt.figure(3)
+                plt.suptitle("Financial Analysis")
+                plt.subplot(1, 2, 1)
+                plt.plot(list(weather.index.to_pydatetime()), cum_revenue_comparison[0], label = "Revenue")
+                plt.plot(list(weather.index.to_pydatetime()), cost_comparison[0], label = "Costs")
+                plt.legend()
+                plt.xlabel('Time')
+                plt.xticks(rotation = 60)
+                plt.ylabel("USD")
+                plt.title("{}".format(listOfDicts[0]['turbine_type']))
+                plt.subplot(1, 2, 2)
+                plt.plot(list(weather.index.to_pydatetime()), cum_revenue_comparison[1], label = "Revenue")
+                plt.plot(list(weather.index.to_pydatetime()), cost_comparison[1], label = "Costs")
+                plt.legend()
+                plt.xlabel('Time')
+                plt.xticks(rotation = 60)
+                plt.title("{}".format(listOfDicts[1]['turbine_type']))
+                plt.tight_layout()
+                plt.show()
+                
+                plt.figure(4)
+                plt.suptitle("Profit Comparison")
+                plt.subplot(1, 2, 1)
+                plt.plot(list(weather.index.to_pydatetime()), cum_profit_comparison[0])
+                plt.xlabel('Time')
+                plt.xticks(rotation = 60)
+                plt.ylabel("USD")
+                plt.title("{}".format(listOfDicts[0]['turbine_type']))
+                plt.subplot(1, 2, 2)
+                plt.plot(list(weather.index.to_pydatetime()), cum_profit_comparison[1])
+                plt.xlabel('Time')
+                plt.xticks(rotation = 60)
+                plt.title("{}".format(listOfDicts[1]['turbine_type']))
+                plt.tight_layout()
+                plt.show()
             else:
                 print()
                 print("WARNING! Financial Comparison Plots are not available for more than two turbines... ")
@@ -622,10 +668,11 @@ while turbine != 'q':
         if YesNo == ('Y' or 'y'):
             continue
         else:
-            print("Program exiting...")
+            print("Program exited.")
             break
     
 
     else:
-        print("Invalid input!")
+        print()
+        print("Invalid input.")
         continue
