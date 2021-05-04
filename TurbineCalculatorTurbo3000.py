@@ -290,8 +290,11 @@ while turbine != 'q':
         data.to_csv('Test_file.csv')
         print("Done! Writing data to CSV file...")
         # Read weather data from csv
-        weather = get_weather_data(filename='Test_file.csv', datapath='')
-        print("Done!",'\n')
+        try:
+            weather = get_weather_data(filename='Test_file.csv', datapath='')
+            print("Done!",'\n')
+        except IndexError:
+            print('\n','Sorry, the chosen location currently is not in the weather database. Please try a different location')
         continue
     elif turbine == 'db':
         print()
