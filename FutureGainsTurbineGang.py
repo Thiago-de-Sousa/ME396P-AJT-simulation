@@ -189,7 +189,10 @@ def get_weather_data(filename='weather.csv', **kwargs):
     return weather_df
 
 # Read weather data from csv
-weather = get_weather_data(filename='weather.csv', datapath='')
+try:
+    weather = get_weather_data(filename='weather.csv', datapath='')
+except PermissionError:
+    sys.exit('Please close any open CSVs before continuing')
 
 csvdata = pd.read_csv('weather.csv')
 tspan = csvdata[csvdata.columns[0]].to_numpy().tolist()[1:]

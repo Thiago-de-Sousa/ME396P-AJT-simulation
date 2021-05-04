@@ -296,24 +296,24 @@ while turbine != 'q':
                 continue
             
          # Parameter input from user. If no value is entered, default values will be used   
-            hub_height = input("Enter the hub height for the turbine: ")
+            hub_height = input("Enter the hub height for the turbine (meters): ")
             if hub_height == '0' or hub_height == '':
                 print("WARNING! Default value will be used...")
                 hub_height = 135
             else:
                 hub_height = int(hub_height)
                 
-            ccost = input('Enter the construction cost for a single {} turbine: '.format(turb_name))
+            ccost = input('Enter the construction cost (USD) for a single {} turbine: '.format(turb_name))
             if ccost == '0' or ccost == '':
-                print("WARNING! Default value will be used...")
                 ccost = 10000000
+                print("WARNING! Default value will be used...",ccost)
             else: 
-                ccost = int(ccost)
+                ccost = eval(ccost)
                 
             mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (w/o %): "))
             if mfactor == '0' or mfactor == '':
-                print("WARNING! Default value will be used...")
                 mfactor = 0.02
+                print("WARNING! Default value will be used...",mfactor)
             else:
                 mfactor = float(mfactor) / 100
                 
@@ -352,7 +352,6 @@ while turbine != 'q':
             else:
                 cum_revenue.append(revenue_list[i] + cum_revenue[i-1])
                 cum_profit.append(revenue_list[i] + cum_revenue[i-1] - cost_list[i])
-        print("Length of Power Output List: ", len(power_gen))
         time_range = len(power_gen) / (24*365)
         tot_revenue = sum(revenue_list)
         tot_costs = cost_list[-1]
