@@ -94,7 +94,7 @@ for record in api_response['hourly']['data']:
     temp = record['temperature']
     press = record['pressure']
     wind = record['windSpeed']
-    time_converted = datetime.fromtimestamp(time_L).strftime('%Y-%m-%dT%H::%M')
+    time_converted = datetime.fromtimestamp(time_L).strftime('%Y-%m-%d %H:%M')
     time_stamps.append(time_converted)
     temperature.append(temp)
     pressure.append(press)
