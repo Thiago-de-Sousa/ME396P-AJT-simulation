@@ -338,33 +338,33 @@ while turbine != 'q':
                 continue
             
             # Parameter input from user. If no value is entered, default values will be used   
-                hub_height = input("Enter the hub height for the turbine (meters): ")
-                if hub_height == '0' or hub_height == '':
-                    print("WARNING! Default value will be used...")
-                    hub_height = 135
-                else:
-                    hub_height = int(hub_height)
-                  
-                ccost = input('Enter the construction cost (USD) for a single {} turbine: '.format(turb_name))
-                if ccost == '0' or ccost == '':
-                    ccost = 10000000
-                    print("WARNING! Default value will be used...",ccost)
-                else: 
-                    ccost = eval(ccost)
-                  
-                mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (don't include the % symbol): "))
-                if mfactor == '0' or mfactor == '':
-                    mfactor = 0.02
-                    print("WARNING! Default value will be used...",mfactor)
-                else:
-                    mfactor = float(mfactor) / 100
-                 
-                revenue = (input("Enter the expected revenue per kWh: "))
-                if revenue == '0' or revenue == '':
-                    print("WARNING! Default value will be used...")
-                    revenue = 0.07
-                else:
-                    revenue = float(revenue)
+            hub_height = input("Enter the hub height for the turbine (meters): ")
+            if hub_height == '0' or hub_height == '':
+                print("WARNING! Default value will be used...")
+                hub_height = 135
+            else:
+                hub_height = int(hub_height)
+
+            ccost = input('Enter the construction cost (USD) for a single {} turbine: '.format(turb_name))
+            if ccost == '0' or ccost == '':
+                ccost = 10000000
+                print("WARNING! Default value will be used...",ccost)
+            else: 
+                ccost = eval(ccost)
+
+            mfactor = (input("Enter the annual maintenance cost as a percentage of the construction cost (don't include the % symbol): "))
+            if mfactor == '0' or mfactor == '':
+                mfactor = 0.02
+                print("WARNING! Default value will be used...",mfactor)
+            else:
+                mfactor = float(mfactor) / 100
+
+            revenue = (input("Enter the expected revenue per kWh: "))
+            if revenue == '0' or revenue == '':
+                print("WARNING! Default value will be used...")
+                revenue = 0.07
+            else:
+                revenue = float(revenue)
             
             # #Just for testing:
             # hub_height = 135
