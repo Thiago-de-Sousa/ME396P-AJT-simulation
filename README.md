@@ -77,7 +77,7 @@ Once it is done, a message will appear saying so, and the user will be presented
 **IV-B. Wind Turbine Database**
 
 To access the included turbine database, type 'db' in the welcome screen. The program will output a 60+ item list containing the manufacturer, turbine name (used in the CSV file 
-mentioned in Section II), and whether curves are available for each turbine. It is important to write the turbine type exactly as it appears on this database!
+mentioned in Section II), and whether curves are available for each turbine. It is important to write the turbine type exactly as it appears on the second column from the left from this database! (not including index as a column)
 
 **IV-C. Single-Turbine Analysis Module**
 
