@@ -28,19 +28,19 @@ II. REQUIREMENTS
 ----------------
 In order to use this program, the user needs to have the required files in the same directory where the .py files are located. Also, several packages need to be installed with the 
 following commands:
-  pip install windpowerlib
-  pip install geopy
-  pip install geocoder
-  pip install meteostat
-  pip install timezonefinderL
-  pip install pandas        
-  pip install sys
-  pip install os            
-  pip install datetime
-  pip install requests        
-  pip install json
-  pip install matplotlib        
-  pip install csv
+  pip install windpowerlib,
+  pip install geopy,
+  pip install geocoder,
+  pip install meteostat,
+  pip install timezonefinderL,
+  pip install pandas,        
+  pip install sys,
+  pip install os,            
+  pip install datetime,
+  pip install requests,        
+  pip install json,
+  pip install matplotlib,        
+  pip install csv,
   
 The required files for correct function of the program are two spreadsheet called TurbinesToCompare.csv, which contains two columns, turbine_catalog_name and hub_height, and MyTurbines.csv that contains three columns: turbine_catalog_name, hub_height and amount.
 Each row will represent a different turbine type, with the name extracted from the database included in the program ('turbine_type' values). The hub height is measured in meters from
