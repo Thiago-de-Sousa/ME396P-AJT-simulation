@@ -53,6 +53,7 @@ III. MODULES
 The program is divided in two parts: 
 - WindPowerCalc3000 History
 - WindPowerCalc3000 Forecast
+
 Each of these parts contain several modules that perform different functions. The modules are the Weather Generation Module, the Single-Turbine Analysis Module, the Multiple-Turbine
 Comparison Module, the Weather-Forecasting Module, the Wind Farm Output Forecast Module and the User Interface. All of the modules include exception handling and user-input validation
 to ensure that the program runs smoothly.
