@@ -40,20 +40,19 @@ In order to use this program, several packages need to be installed. Type the fo
  - pip install csv
  - pip install numpy
 
-The user must download all the files in this repository and keep them in the same directory at all times. (The easiest way is to download the repository code as a zip file.) Only the folder called "archived" can be deleted.
+**The user must download all the files in this repository and keep them in the same directory at all times. (The easiest way is to download the repository code as a zip file.) Only the folder called "archived" can be deleted.**
 
 -------------------------------------------
 III. WINDPOWERCALC3000_HISTORY INSTRUCTIONS
 -------------------------------------------
-Open WindPowerCalc3000_History.py
-First ensure that the entire repository was downloaded to one directory, so that helper files can be accessed by the program.
+Open WindPowerCalc3000_History.py.
 
 Once it is running, you will be presented with the welcome interface which will ask you to type a letter to open a module. Each valid letter and its corresponding module is shown below. (The welcome interface shows these instructions.)
-'w'  Weather Module
-'db' Access Wind Turbine Database
-'s'  SingleTurbine Analysis Module
-'c'  Turbine Comparison Module
-'q'  Quits the program.
+ - 'w'  Weather Module
+ - 'db' Access Wind Turbine Database
+ - 's'  SingleTurbine Analysis Module
+ - 'c'  Turbine Comparison Module
+ - 'q'  Quits the program.
 
 IMPORTANT: The program must first download weather data for the user's desired location before generating useful plots, so the user's first input should be 'w'.
 
@@ -69,8 +68,9 @@ The windpowerlib package's wind turbine database is accessed by typing 'db' afte
 
 **C. Single Turbine Analysis Module**
 
-This module is accessed by typing 's' after the welcome instructions. If weather data hasn't been generated yet the program will inform the user and return to the welcome instructions. 
-Once the weather data is available, the user will need to type the name of the turbine model they wish to analyze. The turbine model name must excatly match the name as it is shown in the turbine_type column of the database. The user can type 'db' to see the database.
+This module is accessed by typing 's' after the welcome instructions. If weather data hasn't been generated yet the program will inform the user and return to the welcome instructions.
+
+The user will be prompted for the name of the turbine model they wish to analyze. The turbine model name must excatly match the name as it is shown in the turbine_type column of the database. The user can type 'db' to see the database.
 Once the turbine type is accepted, the user will need to input the turbine hub height, construction cost (USD), annual maintenance cost (as a percentage of the construction cost, without the % sign), and expected revenue (USD per kWh produced). If the user enters '0' or just hits enter in any of these, a default value will be used, and a 
 warning message will appear.
 
@@ -126,9 +126,11 @@ Once the user has reviewed all the information presented, the generated plot png
 IV. WINDPOWERCALC3000_FORECAST INSTRUCTIONS
 -------------------------------------------
 Open WindPowerCalc3000_Forecast.py
-First ensure that the entire repository was downloaded to one directory, so that helper files can be accessed by the program.
+
 The MyTurbines.csv file represents your wind farm. It currently has data for an wind farm. The first column is titled turbine_catalog_name. Put the names of the turbine models in your wind farm. Check the turbine_database.csv file for all the turbine models that this package supports. In the second column, put the hub height of each of your turbine models. If you have multiple turbines of the same model that were built at different hub heights, you must create a new row for each combination of turbine model and hub height. For each row in the third column, put the number of turbines in your wind farm that are of that row's model and hub height. Save and close the MyTurbines.csv file.
+
 Run the WindPowerCalc3000_Forecast.py file. Enter the desired location. For example: "Sacramento, CA". Another example: "Paris, France". Some locations will have no available data.
+
 The program will output a plot of the seven day hourly power generation forecast for your wind farm (this uses calculation functions from windpowerlib package). An image of this plot will be saved to the "Forecast Plots" folder. This folder contains example plots that can be deleted if desired.
 
 ----------------
