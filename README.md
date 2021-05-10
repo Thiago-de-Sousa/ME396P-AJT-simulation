@@ -1,127 +1,140 @@
-Created by Ashan Ranmuthu, Thiago de Sousa Burgani and Juan P. Barberena Valencia
+Created by Ashan Ranmuthu, Thiago de Sousa Burgani, and Juan P. Barberena Valencia
 
 *****************************
 WINDPOWERCALC3000 README FILE
 *****************************
 
 Contents:
-I.   Introduction
-II.  Requirements
-III. Available Modules
-IV.  WindPowerCalc3000 History Instructions
-V.   WindPowerCalc3000 Forecast Instructions
-VI.  Useful Links
+I. Introduction
+II. Requirements
+III. WindPowerCalc3000_History Instructions
+IV. WindPowerCalc3000_Forecast Instructions
+V. Useful Links
 
 
 ---------------
 I. INTRODUCTION
 ---------------
-This program was created as the final project for the Programming For Engineers course (ME 396P) during the Spring 2021 semester, with Dr. Pryor as instructor.
-The main purpose was to develop a program that was able to handle user input for a specific location and other parameters, such as time range, wind turbine type and financial attributes,
-to calculate energy production and generate a detailed financial report for the user to review. This report would help the user decide whether the picked location is a good place to 
-build a wind turbine. Furthermore, the program would allow the user to compare several turbine types at the same time to aid in the process of choosing the turbine with the best
-performace at the given location. Finally, the program also includes a module to forecast energy production into the near future for a wind farm in a specific location. This would enable
-the user to plan accordingly to meet power demand and the use of backup power if needed.
+This package was created as the final project for the Application Programming For Engineers course (ME 396P) during the Spring 2021 semester with Dr. Pryor as instructor.
+This package has two programs:
+1. WindPowerCalc3000_History: This program helps parties interested in building wind turbines decide where and which models to build. It does this by estimating the energy production and financial performance a given turbine would have achieved under historical weather conditions in a given location. It can also provide comparative estimates for multiple turbines if desired so that users can make decisions between turbines. 
+2. WindPowerCalc3000_Forecast: This program helps parties that already operate wind turbines forecast their power production over the next seven days. The parties can then compare the power production forecast with their own power demand forecasts to predict when supplemental power will be needed and when there will be excess wind energy to store.
 
 ----------------
 II. REQUIREMENTS
 ----------------
-In order to use this program, the user needs to have the required files in the same directory where the .py files are located. Also, several packages need to be installed with the 
-following commands:
-  pip install windpowerlib,
-  pip install geopy,
-  pip install geocoder,
-  pip install meteostat,
-  pip install timezonefinderL,
-  pip install pandas,        
-  pip install sys,
-  pip install os,            
-  pip install datetime,
-  pip install requests,        
-  pip install json,
-  pip install matplotlib,        
-  pip install csv,
-  
-The required files for correct function of the program are two spreadsheet called TurbinesToCompare.csv, which contains two columns, turbine_catalog_name and hub_height, and MyTurbines.csv that contains three columns: turbine_catalog_name, hub_height and amount.
-Each row will represent a different turbine type, with the name extracted from the database included in the program ('turbine_type' values). The hub height is measured in meters from
-the ground to the center of the hub, and the amount refers to the number of each turbine type found in a wind farm. 
-It is extremely important to have the spreadsheets formatted as outlined above, or the program will not work as intended, and wrong results or program termination might occur.
+In order to use this program, several packages need to be installed. Type the following commands into the console of your IDE to do so:
 
-------------
-III. MODULES
-------------
-The program is divided in two parts: 
-- WindPowerCalc3000 History
-- WindPowerCalc3000 Forecast
+pip install windpowerlib
+pip install geopy
+pip install geocoder
+pip install meteostat
+pip install timezonefinderL
+pip install pandas
+pip install sys
+pip install os
+pip install datetime
+pip install requests
+pip install json
+pip install matplotlib
+pip install csv
+pip install numpy
 
-Each of these parts contain several modules that perform different functions. The modules are the Weather Generation Module, the Single-Turbine Analysis Module, the Multiple-Turbine
-Comparison Module, the Weather-Forecasting Module, the Wind Farm Output Forecast Module and the User Interface. All of the modules include exception handling and user-input validation
-to ensure that the program runs smoothly.
+The user must download all the files in this repository and keep them in the same directory at all times. (The easiest way is to download the repository code as a zip file.) Only the folder called "archived" can be deleted.
 
------------------------------
-IV. WINDPOWERCALC3000 HISTORY
------------------------------
-First, ensure you are in the correct working directory. End should be /ME396P-AJT-simulation. Ensure the **History Plots** folder exists in the directory. The images for both single turbine and turbine comparison programs will be saved to this folder.
+-------------------------------------------
+III. WINDPOWERCALC3000_HISTORY INSTRUCTIONS
+-------------------------------------------
+Open WindPowerCalc3000_History.py
+First ensure that the entire repository was downloaded to one directory, so that helper files can be accessed by the program.
 
-After cloning the repository, run the WindPowerCalc3000_History.py file. Once it is running, you will be presented with the welcome interface. Keyboard commands will be displayed with an explanation for each different command. 
-IMPORTANT: In order to use the program, the user needs to download the weather data first. Type w (case sensitive) to access the Weather Generation Module.
+Once it is running, you will be presented with the welcome interface which will ask you to type a letter to open a module. Each valid letter and its corresponding module is shown below. (The welcome interface shows these instructions.)
+'w'  Weather Module
+'db' Access Wind Turbine Database
+'s'  SingleTurbine Analysis Module
+'c'  Turbine Comparison Module
+'q'  Quits the program.
 
-**IV-A. Weather Generation Module**
+IMPORTANT: The program must first download weather data for the user's desired location before generating useful plots, so the user's first input should be 'w'.
 
-Once inside the Weather Generation Module, the user will type in the desired location for analysis in the format City, State/Province, Country. Some City, State Abbreviation
-combinations work, but others may not. For instance, if you type 'Denver, CO', the program will locate you in a small town in Colombia. After location input, the program will ask
-for the beginning of the time frame in the format YYYY/M/D, all in separate prompts. Similarly, the program will then ask for the end of the time frame with the same format.
-Once location and time range have been specified, the program will check for distance between location and the user's IP address as an input validation function. If the distance is
-greater than 350 miles, the program will ask for input validation from the user. To continue, type 'y' or 'Y'. The weather download will begin, and it may take a few moments. 
-Once it is done, a message will appear saying so, and the user will be presented again with the welcome instructions.
+**III-A. Weather Module**
 
-**IV-B. Wind Turbine Database**
+This module is accessed by typing 'w' after the welcome instructions. In this module, the user will type in the desired location for analysis. For example: "Sacramento, CA". Another example: "Paris, France". The program will check the distance between the specified location and the user's IP address. If the distance is greater than 350 miles, the program will display this distance and ask whether to proceed. This can help verify whether the program has selected the right location. (For example, it will inform a user in Texas if the program is looking for Paris, France when the user actually wanted Paris, Texas.)
+The program will then ask for the beginning and end of the historical time frame for which plots should be generated. **Only data since the year 2000 can be reliably downloaded.** The weather data download will begin. A longer time frame will lead to a longer download time. A time frame of one year will typically download in ten seconds. Some locations will have no available data.
+After downloading, a message will appear, and the user will be presented again with the welcome instructions for how to proceed.
 
-To access the included turbine database, type 'db' in the welcome screen. The program will output a 60+ item list containing the manufacturer, turbine name (used in the CSV file 
-mentioned in Section II), and whether curves are available for each turbine. It is important to write the turbine type exactly as it appears on the second column from the left from this database! (not including index as a column)
+**III-B. Access Wind Turbine Database**
 
-**IV-C. Single-Turbine Analysis Module**
+The windpowerlib package's wind turbine database is accessed by typing 'db' after the welcome instructions. The program will automatically display the database in chart form. (The database is stored in turbine_database.csv.) The turbine_type column shows the names of the models.
 
-To access this module, type 's' in the welcome screen. If weather data hasn't been generated yet the program will produce an error message and return the user to the welcome screen. 
-Once the weather data is available, the user will need to type the name of the turbine they wish to analyze. The user can always type 'db' if they forget what the exact name is.
-Once the turbine type is accepted by the program, the user will need to input several parameters that include Hub Height, Construction Cost, Annual Maintenance Cost (as a percentage
-of the construction cost, without the % sign) and Expected Revenue (per kWh). If the user enters '0' or just hits enter in any of these, the default value will be used, and a 
+**III-C. Single Turbine Analysis Module**
+
+This module is accessed by typing 's' after the welcome instructions. If weather data hasn't been generated yet the program will inform the user and return to the welcome instructions. 
+Once the weather data is available, the user will need to type the name of the turbine model they wish to analyze. The turbine model name must excatly match the name as it is shown in the turbine_type column of the database. The user can type 'db' to see the database.
+Once the turbine type is accepted, the user will need to input the turbine hub height, construction cost (USD), annual maintenance cost (as a percentage of the construction cost, without the % sign), and expected revenue (USD per kWh produced). If the user enters '0' or just hits enter in any of these, a default value will be used, and a 
 warning message will appear.
-Once all the parameters are accepted, the program will perform the calculations and produce the outputs. A detailed report will be printed to the screen, containing the values for all
-the parameters and then the results section, which contains the following items:
- - Total Energy Output through the time range (in MWh)
- - Total Revenue obtained through the time range
- - Total Profit at the end of the time range
- - Break-Even Point time prediction in years
-The program will also show three different plots. These include the following information:
- - Plot of Power Output at each point in the time range
- - Plot of Revenue vs. Costs over the time range. If certains conditions are met, the Break-Even point will be noticeable in this plot
- - Plot of Profit over the time range
+
+The program then performs the calculations and produces the following plots. These plots are are also saved as png images to the directory "History Plots\Single Turbine History Plots" which contains example plots that can be deleted if desired.
+1. Power Output (Power vs Time) (uses calculation functions from windpowerlib package)
+2. Financial Analysis (Revenue and Costs vs Time)
+3. Profit (Profit vs Time)
+
+A detailed report will also be printed to the screen and contain the following user-inputed parameters:
+ - Location
+ - Length of time range
+ - Construction Cost
+ - Annual Maintenance Cost
+ - Revenue per kWh
+
+The report will also contain the following calculations:
+ - Total Energy Output through the time range.
+ - Total Revenue obtained through the time range.
+ - Total Profit obtained through the time range.
+ - Break Even: a prediction of the time needed to break even on construction cost and annual maintenance costs. (Only accurate if time range is at least 1 year.)
 
 Once the user has reviewed all the information presented, they can choose whether to return to the welcome screen or to quit the program.
 
-**IV-D. Multiple-Turbine Comparison Module**
+**III-D. Turbine Comparison Module**
 
-To access this module, type 'c' in the welcome screen. Similarly to the single turbine module, weather data needs to be downloaded first before gaining access to this module.
-Instructions regarding the required CSV file will be presented. Once the CSV file is ready in the same directory and with the correct format, the user can hit any key to advance. Ensure to close the CSV before continuing. The CSV should be named TurbinesToCompare.csv The
-program will read the file and prompt user-input for the parameters for each turbine. Revenue per kWh will be considered the same for all turbines, since the purpose of this module
-is to compare the financial performance of each turbine based on their power production and costs. Once all parameters are accepted by the program, calculations will be done and 
-results displayed. The financial report will be formatted as a table containing parameters and results for each turbine type available in the CSV file. The table is easy to read
-for a quick comparison of each attribute. 
-Plots will only be generated if two turbine types are being compared, due to graphical space limitations.
-Again, the user will be presented with the option to return to the welcome screen or to quit the program.
+This module is accessed by typing 'c' after the welcome instructions. It is very similar to the Single Turbine Analysis Module. If weather data hasn't been generated yet the program will inform the user and return to the welcome instructions.
 
------------------------------
-V. WINDPOWERCALC3000 FORECAST
------------------------------
-First, ensure you are in the correct working directory. End should be /ME396P-AJT-simulation. Ensure the **Forecast Plots** folder exists in the directory. The images generated will be saved to this folder.
-After cloning this repository, run the WindPowerCalc3000_Forecast.py file. The CSV file containing the turbine types and their respective parameters should already be located in the same directory (named MyTurbines.csv). If you'd like to change the turbines, make edits to the CSV, but ensure it is **closed** before running the script.
-The program will ask only for the desired location. Once the input is validated, the program will output a plot that shows the total power to be generated by all the turbines in the farm, accurate to the hour, for the next 168 hours (7 days).
+The turbine models to compare are obtained from the TurbinesToCompare.csv file. Simply update that file with the turbine model names and the hub heights at which you would build them. The turbine model names must exactly match entries in the turbine_database.csv file. Once the CSV file is ready with the correct format and turbine model names, press enter.
+The user must then follow prompts to enter the expecte revenue (USD per kWh produced), construction cost (USD), and annual maintenance cost (as a percentage of the construction cost, without the % sign).
+
+The program then performs the calculations and produces the following plots. These plots are are also saved as png images to the directory "History Plots\Turbine Comparison History Plots" which contains example plots that can be deleted if desired.
+1. Power Output (Power vs Time) (uses calculation functions from windpowerlib package)
+2. Financial Analysis (Revenue and Costs vs Time) (only for two turbine models or less)
+3. Profit (Profit vs Time) (only for two turbine models or less)
+
+A detailed report will also be printed to the screen and contain the following user-inputed parameters:
+ - Location
+ - Length of time range
+ - Revenue per kWh
+
+The report will also print a table that provides the following parameters for every turbine:
+ - Turbine model name
+ - Construction Cost
+ - Maintenance Cost
+ - Energy produced in the time range
+ - Revenue obtained through the time range
+ - Profit obtained through the time range
+ - Break Even: a prediction of the time needed to break even on construction cost and annual maintenance costs. (Only accurate if time range is at least 1 year.)
+
+Once the user has reviewed all the information presented, they can choose whether to return to the welcome screen or to quit the program.
+
+-------------------------------------------
+IV. WINDPOWERCALC3000_FORECAST INSTRUCTIONS
+-------------------------------------------
+Open WindPowerCalc3000_Forecast.py
+First ensure that the entire repository was downloaded to one directory, so that helper files can be accessed by the program.
+The MyTurbines.csv file represents your wind farm. It currently has data for an wind farm. The first column is titled turbine_catalog_name. Put the names of the turbine models in your wind farm. Check the turbine_database.csv file for all the turbine models that this package supports. In the second column, put the hub height of each of your turbine models. If you have multiple turbines of the same model that were built at different hub heights, you must create a new row for each combination of turbine model and hub height. For each row in the third column, put the number of turbines in your wind farm that are of that row's model and hub height. Save and close the MyTurbines.csv file.
+Run the WindPowerCalc3000_Forecast.py file. Enter the desired location. For example: "Sacramento, CA". Another example: "Paris, France". Some locations will have no available data.
+The program will output a plot of the seven day hourly power generation forecast for your wind farm (this uses calculation functions from windpowerlib package). An image of this plot will be saved to the "Forecast Plots" folder. This folder contains example plots that can be deleted if desired.
 
 ----------------
-VI. USEFUL LINKS
+V. USEFUL LINKS
 ----------------
-To learn more about the packages being used in this program, copy and paste the following links in your web browser:
+To learn more about the main packages being used in this program, copy and paste the following links in your web browser:
 - https://windpowerlib.readthedocs.io/en/stable/                  -- windpowerlib documentation
 - https://geopy.readthedocs.io/en/stable/                         -- Geopy documentation
 - https://geocoder.readthedocs.io/                                -- Geocoder documentation
