@@ -40,7 +40,7 @@ In order to use this program, several packages need to be installed. Type the fo
  - pip install csv
  - pip install numpy
 
-**The user must download all the files in this repository and keep them in the same directory at all times. (The easiest way is to download the repository code as a zip file.) Only the folder called "archived" can be deleted.**
+**The user must download all the files in this repository and keep them in the same directory at all times.** (The easiest way is to download the repository code as a zip file.) Only the folder called "archived" can be deleted.
 
 -------------------------------------------
 III. WINDPOWERCALC3000_HISTORY INSTRUCTIONS
@@ -59,7 +59,7 @@ IMPORTANT: The program must first download weather data for the user's desired l
 **A. Weather Module**
 
 This module is accessed by typing 'w' after the welcome instructions. In this module, the user will type in the desired location for analysis. For example: "Sacramento, CA". Another example: "Paris, France". The program will check the distance between the specified location and the user's IP address. If the distance is greater than 350 miles, the program will display this distance and ask whether to proceed. This can help verify whether the program has selected the right location. (For example, it will inform a user in Texas if the program is looking for Paris, France when the user actually wanted Paris, Texas.)
-The program will then ask for the beginning and end of the historical time frame for which plots should be generated. **Only data since the year 2000 can be reliably downloaded.** The weather data download will begin. A longer time frame will lead to a longer download time. A time frame of one year will typically download in ten seconds. Some locations will have no available data.
+The program will then ask for the beginning and end of the historical time frame for which plots should be generated. **Only data since the year 2000 can be reliably downloaded.** The weather data download will begin. A longer time frame will lead to a longer download time. **A time frame of one year will typically download in ten seconds.** Some locations will have no available data.
 After downloading, a message will appear, and the user will be presented again with the welcome instructions for how to proceed.
 
 **B. Access Wind Turbine Database**
