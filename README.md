@@ -5,11 +5,11 @@ WINDPOWERCALC3000 README FILE
 *****************************
 
 Contents:
-I. Introduction
-II. Requirements
-III. WindPowerCalc3000_History Instructions
-IV. WindPowerCalc3000_Forecast Instructions
-V. Useful Links
+ - I. Introduction
+ - II. Requirements
+ - III. WindPowerCalc3000_History Instructions
+ - IV. WindPowerCalc3000_Forecast Instructions
+ - V. Useful Links
 
 
 ---------------
@@ -57,17 +57,17 @@ Once it is running, you will be presented with the welcome interface which will 
 
 IMPORTANT: The program must first download weather data for the user's desired location before generating useful plots, so the user's first input should be 'w'.
 
-**III-A. Weather Module**
+**A. Weather Module**
 
 This module is accessed by typing 'w' after the welcome instructions. In this module, the user will type in the desired location for analysis. For example: "Sacramento, CA". Another example: "Paris, France". The program will check the distance between the specified location and the user's IP address. If the distance is greater than 350 miles, the program will display this distance and ask whether to proceed. This can help verify whether the program has selected the right location. (For example, it will inform a user in Texas if the program is looking for Paris, France when the user actually wanted Paris, Texas.)
 The program will then ask for the beginning and end of the historical time frame for which plots should be generated. **Only data since the year 2000 can be reliably downloaded.** The weather data download will begin. A longer time frame will lead to a longer download time. A time frame of one year will typically download in ten seconds. Some locations will have no available data.
 After downloading, a message will appear, and the user will be presented again with the welcome instructions for how to proceed.
 
-**III-B. Access Wind Turbine Database**
+**B. Access Wind Turbine Database**
 
 The windpowerlib package's wind turbine database is accessed by typing 'db' after the welcome instructions. The program will automatically display the database in chart form. (The database is stored in turbine_database.csv.) The turbine_type column shows the names of the models.
 
-**III-C. Single Turbine Analysis Module**
+**C. Single Turbine Analysis Module**
 
 This module is accessed by typing 's' after the welcome instructions. If weather data hasn't been generated yet the program will inform the user and return to the welcome instructions. 
 Once the weather data is available, the user will need to type the name of the turbine model they wish to analyze. The turbine model name must excatly match the name as it is shown in the turbine_type column of the database. The user can type 'db' to see the database.
@@ -94,7 +94,7 @@ The report will also contain the following calculations:
 
 Once the user has reviewed all the information presented, they can choose whether to return to the welcome screen or to quit the program.
 
-**III-D. Turbine Comparison Module**
+**D. Turbine Comparison Module**
 
 This module is accessed by typing 'c' after the welcome instructions. It is very similar to the Single Turbine Analysis Module. If weather data hasn't been generated yet the program will inform the user and return to the welcome instructions.
 
@@ -120,7 +120,7 @@ The report will also print a table that provides the following parameters for ev
  - Profit obtained through the time range
  - Break Even: a prediction of the time needed to break even on construction cost and annual maintenance costs. (Only accurate if time range is at least 1 year.)
 
-Once the user has reviewed all the information presented, they can choose whether to return to the welcome screen or to quit the program.
+Once the user has reviewed all the information presented, the generated plot png images must be placed in a folder to prevent them from being overridden the next time this module is used. Then the user can choose whether to return to the welcome screen or to quit the program. 
 
 -------------------------------------------
 IV. WINDPOWERCALC3000_FORECAST INSTRUCTIONS
