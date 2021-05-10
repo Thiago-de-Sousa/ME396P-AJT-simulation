@@ -25,20 +25,20 @@ II. REQUIREMENTS
 ----------------
 In order to use this program, several packages need to be installed. Type the following commands into the console of your IDE to do so:
 
-pip install windpowerlib
-pip install geopy
-pip install geocoder
-pip install meteostat
-pip install timezonefinderL
-pip install pandas
-pip install sys
-pip install os
-pip install datetime
-pip install requests
-pip install json
-pip install matplotlib
-pip install csv
-pip install numpy
+ - pip install windpowerlib
+ - pip install geopy
+ - pip install geocoder
+ - pip install meteostat
+ - pip install timezonefinderL
+ - pip install pandas
+ - pip install sys
+ - pip install os
+ - pip install datetime
+ - pip install requests
+ - pip install json
+ - pip install matplotlib
+ - pip install csv
+ - pip install numpy
 
 The user must download all the files in this repository and keep them in the same directory at all times. (The easiest way is to download the repository code as a zip file.) Only the folder called "archived" can be deleted.
 
